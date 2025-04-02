@@ -169,3 +169,4 @@ C:\Users\a_boussatha\Projet\BackEnd\bin\Debug\net9.0\runtimes\win\lib\net6.0\Sys
 C:\Users\a_boussatha\Projet\BackEnd\bin\Debug\net9.0\Npgsql.dll
 C:\Users\a_boussatha\Projet\BackEnd\bin\Debug\net9.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
 C:\Users\a_boussatha\Projet\BackEnd\bin\Debug\net9.0\AutoMapper.dll
+C:\Users\a_boussatha\Projet\BackEnd\obj\Debug\net9.0\BackEnd.sourcelink.json

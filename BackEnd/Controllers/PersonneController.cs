@@ -1,7 +1,7 @@
 using BackEnd.Class;
+using BackEnd.Models;
 using BackEnd.Services;
 using Microsoft.AspNetCore.Mvc;
-using BackEnd.Models;
 using AutoMapper;
 
 namespace BackEnd.Controllers
@@ -59,16 +59,37 @@ namespace BackEnd.Controllers
             return CreatedAtAction(nameof(GetAllPersonnes), new { message = "Personnes ajoutées avec succès" });
         }
 
-        // PUT: api/personne/{id}
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdatePersonne(int id, [FromBody] Personne personne)
+        public async Task<ActionResult<PersonneModel>> UpdatePersonne(int id, [FromBody] FormPersonneModel personne)
         {
-            if (id != personne.Id)
+            var existingPersonne = await _personneService.GetPersonneByIdAsync(id);
+            
+            if (existingPersonne == null)
             {
-                return BadRequest();
+                return NotFound("Personne non trouvée.");
             }
-            await _personneService.UpdatePersonneAsync(personne);
-            return NoContent();
+
+            // Mise à jour des propriétés de l'objet existant
+            if (!string.IsNullOrEmpty(personne.Nom))
+                existingPersonne.Nom = personne.Nom;
+
+            if (!string.IsNullOrEmpty(personne.Prenom))
+                existingPersonne.Prenom = personne.Prenom;
+
+            if (!string.IsNullOrEmpty(personne.Email))
+                existingPersonne.Email = personne.Email;
+
+            if (!string.IsNullOrEmpty(personne.Telephone))
+                existingPersonne.Telephone = personne.Telephone;
+
+            // Appliquez la mise à jour dans la base de données
+            await _personneService.UpdatePersonneAsync(existingPersonne);
+
+            // Mappez l'entité mise à jour en modèle (par exemple PersonneModel)
+            var updatedPersonneModel = _mapper.Map<PersonneModel>(existingPersonne);
+
+            // Retourne le modèle modifié avec un statut HTTP 200 OK
+            return Ok(updatedPersonneModel); 
         }
 
         // DELETE: api/personne/{id}
