@@ -9,11 +9,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace BackEnd.Data
+namespace BackEnd.Migrations
 {
     [DbContext(typeof(MonProjetDbContext))]
-    [Migration("20250401100956_FixDate")]
-    partial class FixDate
+    [Migration("20250408140433_Migration_$(date +%Y%m%d%H%M%S)")]
+    partial class Migration_dateYmdHMS
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,6 +75,11 @@ namespace BackEnd.Data
 
                     b.Property<string>("Telephone")
                         .HasColumnType("text");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("Ville")
                         .HasMaxLength(100)
