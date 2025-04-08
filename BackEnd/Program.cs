@@ -1,14 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using BackEnd.Context;
-using BackEnd.Controllers;
 using BackEnd.Services;
+using System.Text;
 using BackEnd.Repository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Ajouter la configuration de la chaîne de connexion à la base de données PostgreSQL (si vous utilisez PostgreSQL)
 builder.Services.AddDbContext<MonProjetDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))); 
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Ajouter les services nécessaires pour l'API (contrôleurs)
 builder.Services.AddControllers();
@@ -33,7 +35,20 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
-
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],  
+            ValidAudience = builder.Configuration["Jwt:Audience"],  
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"]))  
+        };
+    });
 // Activer Swagger uniquement en mode développement pour faciliter le test de l'API
 if (app.Environment.IsDevelopment())
 {

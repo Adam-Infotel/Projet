@@ -11,6 +11,11 @@ namespace BackEnd.Class
         [Key]
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "Le username est requis.")]
+        [StringLength(100, ErrorMessage = "Le prénom ne peut pas dépasser 100 caractères.")]
+        [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Le username ne doit contenir que des lettres et des espaces.")]
+        public string Username { get; set; }
+
         // Prénom de la personne
         [Required(ErrorMessage = "Le prénom est requis.")]
         [StringLength(100, ErrorMessage = "Le prénom ne peut pas dépasser 100 caractères.")]

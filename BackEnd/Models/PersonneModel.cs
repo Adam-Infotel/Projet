@@ -1,7 +1,10 @@
-namespace BackEnd.Models {
-    public class PersonneModel {
+namespace BackEnd.Models
+{
+    public class PersonneModel
+    {
+        public int Id { get; set; }
+        public string Username { get; set; }
         public string Prenom { get; set; }
-        public int Id {get;set;}
         public string Nom { get; set; }
         public string Email { get; set; }
         public string? Telephone { get; set; }
@@ -13,11 +16,12 @@ namespace BackEnd.Models {
         public DateTime? LastConnexion { get; set; }
 
         // Constructor simplifié pour mapper facilement une entité Personne à PersonneModel
-        public PersonneModel(int id, string prenom, string nom, string email, string? telephone, 
+        public PersonneModel(int id, string username, string prenom, string nom, string email, string? telephone,
                              string? adresse, string? ville, string? codePostal, string? pays,
                               bool isConnected, DateTime? lastConnexion)
         {
             Id = id;
+            Username = username;
             Prenom = prenom;
             Nom = nom;
             Email = email;
